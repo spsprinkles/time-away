@@ -25,7 +25,8 @@
     "dattatable": "^1.2.5",
     "gd-sprest-bs": "^8.6.4",
     "jquery": "^3.6.0",
-    "moment": "^2.29.1"
+    "moment": "^2.29.1",
+    "vis-timeline": "^7.4.9"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",

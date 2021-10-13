@@ -1,20 +1,23 @@
-import { Dashboard, ItemForm } from "dattatable";
+import { Dashboard } from "dattatable";
 import { Components } from "gd-sprest-bs";
 import * as jQuery from "jquery";
 import * as moment from "moment";
 import { formatDateValue } from "./common";
 import { DataSource, IItem } from "./ds";
+import { EventsForm } from "./itemForm";
 import Strings from "./strings";
+import { TimeLine } from "./timeline";
 
 /**
  * Main Application
  */
 export class App {
+    private _dashboard: Dashboard = null;
+    private _elTable: HTMLElement = null;
+    private _timeline: TimeLine = null;
+
     // Constructor
     constructor(el: HTMLElement) {
-        // Set the list name
-        ItemForm.ListName = Strings.Lists.TimeAway;
-
         // Initialize the application
         DataSource.init().then(() => {
             // Render the dashboard
@@ -22,10 +25,20 @@ export class App {
         });
     }
 
+    // Refreshes the dashboard
+    private refresh() {
+        // Refresh the data
+        DataSource.load().then(items => {
+            // Update the dashboard and timeline
+            this._dashboard.refresh(items);
+            this._timeline.refresh();
+        });
+    }
+
     // Renders the dashboard
     private render(el: HTMLElement) {
         // Create the dashboard
-        let dashboard = new Dashboard({
+        this._dashboard = new Dashboard({
             el,
             hideHeader: true,
             useModal: true,
@@ -35,7 +48,7 @@ export class App {
                     items: DataSource.CategoryFilters,
                     onFilter: (value: string) => {
                         // Filter the table
-                        dashboard.filter(3, value);
+                        this._dashboard.filter(3, value);
                     }
                 }]
             },
@@ -48,15 +61,32 @@ export class App {
                         isButton: true,
                         onClick: () => {
                             // Create an item
-                            ItemForm.create({
-                                onUpdate: () => {
-                                    // Load the data
-                                    DataSource.load().then(items => {
-                                        // Refresh the table
-                                        dashboard.refresh(items);
-                                    });
-                                }
+                            EventsForm.create(() => {
+                                // Refresh the dashboard
+                                this.refresh();
                             });
+                        }
+                    },
+                    {
+                        className: "btn-outline-light nav-timeline-btn",
+                        text: "Timeline",
+                        isButton: true,
+                        onClick: () => {
+                            // Get the timeline button
+                            let btn = el.querySelector(".nav-timeline-btn") as HTMLElement;
+
+                            // Determine if we are displaying the dashboard
+                            if (btn.innerText.trim() == "Timeline") {
+                                // Show the timeline
+                                this._elTable.classList.add("d-none");
+                                this._timeline.show();
+                                btn.innerHTML = "Dashboard";
+                            } else {
+                                // Show the dashboard
+                                this._timeline.hide();
+                                this._elTable.classList.remove("d-none");
+                                btn.innerHTML = "Timeline";
+                            }
                         }
                     }
                 ]
@@ -90,6 +120,13 @@ export class App {
                     // Order by the 1st column by default; ascending
                     order: [[1, "asc"]]
                 },
+                onRendered: (el, dt) => {
+                    // Save a reference to the element
+                    this._elTable = el;
+
+                    // Render the timeline
+                    this._timeline = new TimeLine(el.parentElement);
+                },
                 columns: [
                     {
                         name: "",
@@ -108,9 +145,7 @@ export class App {
                                         type: Components.ButtonTypes.OutlinePrimary,
                                         onClick: () => {
                                             // Show the display form
-                                            ItemForm.view({
-                                                itemId: item.Id
-                                            });
+                                            EventsForm.view(item.Id);
                                         }
                                     },
                                     {
@@ -118,15 +153,9 @@ export class App {
                                         type: Components.ButtonTypes.OutlineSuccess,
                                         onClick: () => {
                                             // Show the edit form
-                                            ItemForm.edit({
-                                                itemId: item.Id,
-                                                onUpdate: () => {
-                                                    // Refresh the data
-                                                    DataSource.load().then(items => {
-                                                        // Update the data
-                                                        dashboard.refresh(items);
-                                                    });
-                                                }
+                                            EventsForm.edit(item.Id, () => {
+                                                // Refresh the dashboard
+                                                this.refresh();
                                             });
                                         }
                                     }
