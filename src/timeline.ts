@@ -132,8 +132,8 @@ export class TimeLine {
 
                 // Add the group
                 this._groups.push({
-                    id: groupNames,
-                    content: groupNames,
+                    id: groupName,
+                    content: groupName,
                     order: i
                 });
             }
