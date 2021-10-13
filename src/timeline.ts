@@ -8,6 +8,7 @@ import { DataSource } from "./ds";
  */
 export class TimeLine {
     private _el: HTMLElement = null;
+    private _filter: string = null;
     private _groups: Array<any> = null;
     private _items: Array<any> = null;
     private _options: any = null;
@@ -24,6 +25,9 @@ export class TimeLine {
         this._el.id = "timeline";
         el.appendChild(this._el);
 
+        // Load the events and groups
+        this.loadEvents();
+
         // Render the timeline
         this.render();
 
@@ -31,9 +35,23 @@ export class TimeLine {
         this.hide();
     }
 
+    // Filters the timeline
+    filter(value: string) {
+        // Set the filter
+        this._filter = value;
+
+        // Refresh the timeline
+        this._view ? this._view.refresh() : null;
+    }
+
     // Filters the timeline data
     private filterEvents(row) {
-        // TODO
+        // See if a filter is defined
+        if (this._filter) {
+            // See if the category matches
+            if (row.item.Category != this._filter) { return false; }
+        }
+
         // Don't filter out the item
         return true;
     }
@@ -124,11 +142,20 @@ export class TimeLine {
 
     // Refreshes the timeline
     refresh() {
-        // Clear the element
-        while (this._el.firstChild) { this._el.removeChild(this._el.firstChild); }
+        // Load the events and groups
+        this.loadEvents();
 
-        // Render the timeline
-        this.render();
+        // See if data exists
+        if (this._view && this._timeline) {
+            // Update the view
+            this._view.setData(new DataSet(this._items));
+
+            // Update the groups
+            this._timeline.setGroups(this._groups);
+        } else {
+            // Render the timeline
+            this.render();
+        }
     }
 
     // Shows the timeline
@@ -139,13 +166,13 @@ export class TimeLine {
 
     // Renders the timeline
     private render() {
-        // Load the events and groups
-        this.loadEvents();
+        // Ensure items exist
+        if (this._items.length > 0) {
+            // Create the view
+            this._view = new DataView(new DataSet(this._items), { filter: row => { return this.filterEvents(row); } });
 
-        // Create the view
-        this._view = new DataView(new DataSet(this._items), { filter: row => { return this.filterEvents(row); } });
-
-        // Initialize the timeline
-        this._timeline = new Timeline(this._el, this._view, this._groups, this._options);
+            // Initialize the timeline
+            this._timeline = new Timeline(this._el, this._view, this._groups, this._options);
+        }
     }
 }

@@ -47,8 +47,9 @@ export class App {
                     header: "By Category",
                     items: DataSource.CategoryFilters,
                     onFilter: (value: string) => {
-                        // Filter the table
+                        // Filter the table and timeline
                         this._dashboard.filter(3, value);
+                        this._timeline.filter(value);
                     }
                 }]
             },
