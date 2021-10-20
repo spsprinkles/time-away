@@ -18,11 +18,8 @@ export class App {
 
     // Constructor
     constructor(el: HTMLElement) {
-        // Initialize the application
-        DataSource.init().then(() => {
-            // Render the dashboard
-            this.render(el);
-        });
+        // Render the dashboard
+        this.render(el);
     }
 
     // Refreshes the dashboard
@@ -69,7 +66,7 @@ export class App {
                         }
                     },
                     {
-                        className: "btn-outline-light nav-timeline-btn",
+                        className: "btn-outline-light nav-timeline-btn ms-2",
                         text: "Timeline",
                         isButton: true,
                         onClick: () => {
