@@ -1,2 +1,1 @@
-# time-away
-Allows users to enter entries for managing a team's schedule.
+[Click here](https://spsprinkles.com/time-away/) for an overview of the solution.
