@@ -100,7 +100,7 @@ export class TimeLine {
                         group: item.AssignedTo.Title,
                         title: item.Title,
                         start: formatDateValue(startDate),
-                        end: formatDateValue(endDate)
+                        end: formatDateValue(endDate, true)
                     } as any;
 
                     // Add an entry for this user
