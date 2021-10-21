@@ -122,8 +122,14 @@ export class App {
                     // Save a reference to the element
                     this._elTable = el;
 
-                    // Render the timeline
-                    this._timeline = new TimeLine(el.parentElement);
+                    // See if the timeline exists
+                    if (this._timeline) {
+                        // Refresh it
+                        this._timeline.refresh();
+                    } else {
+                        // Render the timeline
+                        this._timeline = new TimeLine(el.parentElement);
+                    }
                 },
                 columns: [
                     {
