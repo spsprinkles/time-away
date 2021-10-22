@@ -1,5 +1,4 @@
 import { InstallationRequired } from "dattatable";
-import { ContextInfo } from "gd-sprest-bs";
 import { App } from "./app";
 import { Configuration } from "./cfg";
 import { DataSource } from "./ds";
