@@ -16,7 +16,6 @@ specifiers:
   sass-loader: ^12.6.0
   style-loader: ^3.3.1
   terser-webpack-plugin: ^5.3.1
-  text-encoding: ^0.7.0
   ts-loader: ^9.2.8
   typescript: ^4.6.3
   url-loader: ^4.1.1
@@ -31,7 +30,6 @@ dependencies:
   gd-sprest-bs: 9.3.7
   jquery: 3.6.0
   moment: 2.29.1
-  text-encoding: 0.7.0
   vis-timeline: 7.5.1_moment@2.29.1
 
 devDependencies:
@@ -2677,11 +2675,6 @@ packages:
       source-map: 0.7.3
       source-map-support: 0.5.20
     dev: true
-
-  /text-encoding/0.7.0:
-    resolution: {integrity: sha512-oJQ3f1hrOnbRLOcwKz0Liq2IcrvDeZRHXhd9RgLrsT+DjWY/nty1Hi7v3dtkaEYbPYe0mUoOfzRrMwfXXwgPUA==}
-    deprecated: no longer maintained
-    dev: false
 
   /tippy.js/6.3.7:
     resolution: {integrity: sha512-E1d3oP2emgJ9dRQZdf3Kkn0qJgI6ZLpyS5z6ZkY1DF3kaQaBsGZsndEpHwx+eC+tYM41HaSNvNtLx8tU57FzTQ==}
