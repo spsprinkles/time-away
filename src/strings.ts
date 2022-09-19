@@ -1,24 +1,20 @@
 import { ContextInfo } from "gd-sprest-bs";
 
 // Updates the strings for SPFx
-export const setContext = (context) => {
-    // Set the page context
-    ContextInfo.setPageContext(context);
-
+export const update = () => {
     // Update the values
-    Strings.SolutionUrl = ContextInfo.webServerRelativeUrl + "/SiteAssets/Event-Registration/index.html";
+    Strings.SourceUrl = ContextInfo.webServerRelativeUrl;
 }
 
 // Strings
 const Strings = {
-    AppElementId: "time-away",
-    GlobalVariable: "TimeAway",
+    AppElementId: "timeline-calendar",
+    GlobalVariable: "TimelineCalendar",
     Lists: {
-        TimeAway: "Time Away"
+        TimeAway: "Timeline Calendar"
     },
-    ProjectName: "Time Away",
-    ProjectDescription: "Logs vacation time for employees.",
-    SolutionUrl: ContextInfo.webServerRelativeUrl + "/siteassets/time-away/index.html",
+    ProjectName: "Timeline Calendar",
+    SourceUrl: ContextInfo.webServerRelativeUrl,
     Version: "0.1"
 }
 export default Strings;

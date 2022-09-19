@@ -1,0 +1,16 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "version": "1.15.2",
+    "libraryName": "timeline-calendar",
+    "libraryId": "29fdbaa1-984b-4359-bdc4-d7f223c1c00b",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "timeline-calendar",
+    "solutionShortDescription": "timeline-calendar description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

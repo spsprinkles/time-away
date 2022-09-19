@@ -1,8 +1,9 @@
 import { InstallationRequired } from "dattatable";
+import { WebParts } from "gd-sprest-bs";
 import { App } from "./app";
 import { Configuration } from "./cfg";
 import { DataSource } from "./ds";
-import Strings, { setContext } from "./strings";
+import Strings, { update } from "./strings";
 
 // Styling
 import "./styles.scss";
@@ -10,15 +11,9 @@ import "./styles.scss";
 // Create the global variable for this solution
 const GlobalVariable = {
     Configuration,
-    render: (el: HTMLElement, context?) => {
-        // See if the page context exists
-        if (context) {
-            // Set the context
-            setContext(context);
-        }
-
+    render: (el: HTMLElement, cfg?: WebParts.ISPFxListWebPartCfg) => {
         // Initialize the solution
-        DataSource.init().then(
+        DataSource.init(cfg).then(
             // Success
             () => {
                 // Create the application
@@ -39,6 +34,20 @@ const GlobalVariable = {
                 });
             }
         );
+    },
+    renderSPFx: (spfx, envType: number) => {
+        // Render the SPFx webpart
+        WebParts.SPFxListWebPart({
+            envType,
+            spfx,
+            render: (el, cfg) => {
+                // Render the solution
+                GlobalVariable.render(el, cfg || {});
+            }
+        });
+
+        // Update the strings
+        update();
     }
 };
 

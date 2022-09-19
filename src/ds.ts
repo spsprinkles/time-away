@@ -1,4 +1,4 @@
-import { Components, List, Types } from "gd-sprest-bs";
+import { Components, Types, Web, WebParts } from "gd-sprest-bs";
 import Strings from "./strings";
 
 // Item
@@ -15,6 +15,9 @@ export interface IItem extends Types.SP.ListItem {
  * Data Source
  */
 export class DataSource {
+    // SPFx Configuration
+    private static _wpCfg: WebParts.ISPFxListWebPartCfg = null;
+
     // Category Filters
     private static _categoryFilters: Components.ICheckboxGroupItem[] = null;
     static get CategoryFilters(): Components.ICheckboxGroupItem[] { return this._categoryFilters; }
@@ -22,31 +25,35 @@ export class DataSource {
         // Return a promise
         return new Promise((resolve, reject) => {
             // Get the status field
-            List(Strings.Lists.TimeAway).Fields("Category").execute((fld: Types.SP.FieldChoice) => {
-                let items: Components.ICheckboxGroupItem[] = [];
+            Web(this._wpCfg ? this._wpCfg.WebUrl : Strings.SourceUrl).Lists(this._wpCfg ? this._wpCfg.ListName : Strings.Lists.TimeAway)
+                .Fields("Category").execute((fld: Types.SP.FieldChoice) => {
+                    let items: Components.ICheckboxGroupItem[] = [];
 
-                // Parse the choices
-                for (let i = 0; i < fld.Choices.results.length; i++) {
-                    // Add an item
-                    items.push({
-                        label: fld.Choices.results[i],
-                        type: Components.CheckboxGroupTypes.Switch
+                    // Parse the choices
+                    for (let i = 0; i < fld.Choices.results.length; i++) {
+                        // Add an item
+                        items.push({
+                            label: fld.Choices.results[i],
+                            type: Components.CheckboxGroupTypes.Switch
+                        });
+                    }
+
+                    // Set the filters and resolve the promise
+                    this._categoryFilters = items.sort((a, b) => {
+                        if (a.label < b.label) { return -1; }
+                        if (a.label > b.label) { return 1; }
+                        return 0;
                     });
-                }
-
-                // Set the filters and resolve the promise
-                this._categoryFilters = items.sort((a, b) => {
-                    if (a.label < b.label) { return -1; }
-                    if (a.label > b.label) { return 1; }
-                    return 0;
-                });
-                resolve(items);
-            }, reject);
+                    resolve(items);
+                }, reject);
         });
     }
 
     // Initializes the application
-    static init(): PromiseLike<void> {
+    static init(cfg: WebParts.ISPFxListWebPartCfg): PromiseLike<void> {
+        // Set the configruation
+        this._wpCfg = cfg;
+
         // Return a promise
         return new Promise((resolve, reject) => {
             // Load the data
@@ -67,7 +74,7 @@ export class DataSource {
         // Return a promise
         return new Promise((resolve, reject) => {
             // Load the data
-            List(Strings.Lists.TimeAway).Items().query({
+            Web(this._wpCfg ? this._wpCfg.WebUrl : Strings.SourceUrl).Lists(this._wpCfg ? this._wpCfg.ListName : Strings.Lists.TimeAway).Items().query({
                 Expand: ["AssignedTo"],
                 GetAllItems: true,
                 OrderBy: ["EventDate"],

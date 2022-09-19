@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "timeline-calendar-client-side-solution",
+    "id": "29fdbaa1-984b-4359-bdc4-d7f223c1c00b",
+    "version": "0.0.0.1",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "spsprinkles-1.15.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "timeline-calendar description"
+      },
+      "longDescription": {
+        "default": "timeline-calendar description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "Timeline Calendar",
+        "description": "The feature that activates elements of the timeline-calendar solution.",
+        "id": "53015c57-c43a-4101-99c0-9ae152c29a7e",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "../../dist/timeline-calendar.sppkg"
+  }
+}
