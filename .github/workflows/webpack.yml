@@ -26,6 +26,8 @@ jobs:
     - name: Install Libraries
       run: |
         npm install
+        cd spfx
+        npm install
 
     - name: Build
       run: |
